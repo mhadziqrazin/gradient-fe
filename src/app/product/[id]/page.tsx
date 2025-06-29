@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
-export default function PayPage({ params }: { params: { id: number } }) {
+export default function PayPage({ params }: { params: Promise<{ id: string }> }) {
   const { getPaymentByProductId, clearPayments } = usePaymentStore()
   const router = useRouter()
   const { id } = React.use(params)
