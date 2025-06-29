@@ -3,5 +3,5 @@ export interface Product {
   name: string
   price: number
   discount: number
-  isHighlighted?: boolean
+  is_highlighted?: boolean
 }

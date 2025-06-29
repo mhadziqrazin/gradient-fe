@@ -7,21 +7,21 @@ const ProductCard: React.FC<Omit<Product, "id">> = ({
   name,
   price,
   discount,
-  isHighlighted,
+  is_highlighted,
 }) => {
   const discountAmount = price * discount
   const priceDiscount = price - discountAmount
 
   return (
     <div className="relative">
-      {isHighlighted && (
+      {is_highlighted && (
         <div className="absolute bottom-full translate-y-4 pt-2 pb-6 bg-purple-500 text-center text-white font-semibold text-sm w-full rounded-t-xl">
           TERPOPULER!
         </div>
       )}
       <Card className={cn(
         "relative w-[250px]",
-        isHighlighted && "border-purple-500"
+        is_highlighted && "border-purple-500"
       )}>
         <CardHeader>
           <CardTitle className="text-center text-xl">
@@ -29,7 +29,7 @@ const ProductCard: React.FC<Omit<Product, "id">> = ({
           </CardTitle>
         </CardHeader>
         <CardContent className="text-center py-16 flex flex-col">
-          <span className={cn("text-3xl font-semibold", isHighlighted && "text-purple-500")}>
+          <span className={cn("text-3xl font-semibold", is_highlighted && "text-purple-500")}>
             Rp{priceDiscount.toLocaleString()}
           </span>
           <span className="text-sm line-through text-muted-foreground">
@@ -37,7 +37,7 @@ const ProductCard: React.FC<Omit<Product, "id">> = ({
           </span>
         </CardContent>
         <CardFooter>
-          <Button className={cn("w-full", isHighlighted && "bg-purple-500 hover:bg-purple-500/90")}>
+          <Button className={cn("w-full", is_highlighted && "bg-purple-500 hover:bg-purple-500/90")}>
             Beli
           </Button>
         </CardFooter>
