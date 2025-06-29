@@ -1,3 +1,26 @@
+### Deployed App
+[https://gradient.hadziqrazin.com/](https://gradient.hadziqrazin.com/)
+
+### Quick Overview
+`/`: Home <br />
+Choose a product to buy or visit the paid page
+<br />
+
+`/pay/<product-id>`: Purchase a product <br />
+- If the product has been purchased, user will be redirected to `/product/<product-id>`
+- If the product hasn't been purchased but the user already made a payment request, user will be redirected to Xendit payment page
+<br />
+
+`/product/<product-id>`: View the paid page <br />
+- If the product hasn't been purchased, user will be redirected to `/pay/<product-id>`
+- If the product hasn't been purchased but the user already made a payment request, user will be redirected to Xendit payment page
+- Click the `Ulangi Simulasi` button to reset payment history
+<br />
+
+
+<br />
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
