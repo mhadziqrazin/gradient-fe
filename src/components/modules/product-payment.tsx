@@ -1,3 +1,5 @@
+"use client"
+
 import { Product } from "@/interfaces/product-interface"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { Button } from "../ui/button"
@@ -5,10 +7,49 @@ import Link from "next/link"
 import { ChevronLeftIcon } from "lucide-react"
 import Image from "next/image"
 import PaymentButton from "./payment-button"
+import { useEffect, useState } from "react"
+import { usePaymentStore } from "@/stores/payment-store"
+import api from "@/lib/api"
+import { useRouter } from "next/navigation"
+import LoadingPage from "./loading-page"
 
 const ProductPaymentModule: React.FC<Product> = (product) => {
   const discountAmount = product.price * product.discount
   const priceDiscount = product.price - discountAmount
+  const { getPaymentByProductId } = usePaymentStore()
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const payment_record = getPaymentByProductId(product.id)
+
+    // use has made a payment for this product (paid or unpaid)
+    if (payment_record) {
+      const { payment_id, invoice_url } = payment_record
+      api.get(`/product/pay/verify/${payment_id}`)
+        .then((res) => {
+          console.log(res)
+          if (res.status === 200) {
+            // product has been purchased, redirect to the product page instead
+            router.replace(`/product/${product.id}`)
+          } else {
+            throw new Error("Produk belum dibayar")
+          }
+        })
+        .catch(() => {
+          router.replace(invoice_url)
+        })
+      return
+    }
+
+    setIsLoading(false)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  if (isLoading) {
+    return <LoadingPage />
+  }
 
   return (
     <main className="px-20 py-10 flex flex-col">
