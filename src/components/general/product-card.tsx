@@ -2,43 +2,47 @@ import { Product } from "@/interfaces/product-interface"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
+import { Badge } from "../ui/badge"
 
-const ProductCard: React.FC<Omit<Product, "id">> = ({
-  name,
-  price,
-  discount,
-  is_highlighted,
-}) => {
-  const discountAmount = price * discount
-  const priceDiscount = price - discountAmount
+const ProductCard: React.FC<Product> = (product) => {
+  const discountAmount = product.price * product.discount
+  const priceDiscount = product.price - discountAmount
 
   return (
     <div className="relative">
-      {is_highlighted && (
+      {product.is_highlighted && (
         <div className="absolute bottom-full translate-y-4 pt-2 pb-6 bg-purple-500 text-center text-white font-semibold text-sm w-full rounded-t-xl">
           TERPOPULER!
         </div>
       )}
       <Card className={cn(
         "relative w-[250px]",
-        is_highlighted && "border-purple-500"
+        product.is_highlighted && "border-purple-500"
       )}>
         <CardHeader>
           <CardTitle className="text-center text-xl">
-            {name}
+            {product.name}
           </CardTitle>
         </CardHeader>
         <CardContent className="text-center py-16 flex flex-col">
-          <span className={cn("text-3xl font-semibold", is_highlighted && "text-purple-500")}>
+          <span className={cn("text-3xl font-semibold", product.is_highlighted && "text-purple-500")}>
             Rp{priceDiscount.toLocaleString()}
           </span>
-          <span className="text-sm line-through text-muted-foreground">
-            Rp{price.toLocaleString()}
-          </span>
+          <div className="flex gap-2 items-center justify-center py-2">
+            <Badge className="bg-red-100 text-red-500 font-semibold">
+              {product.discount * 100}%
+            </Badge>
+            <span className="text-sm line-through text-muted-foreground">
+              Rp{product.price.toLocaleString()}
+            </span>
+          </div>
         </CardContent>
         <CardFooter>
-          <Button className={cn("w-full", is_highlighted && "bg-purple-500 hover:bg-purple-500/90")}>
-            Beli
+          <Button asChild className={cn("w-full", product.is_highlighted && "bg-purple-500 hover:bg-purple-500/90")}>
+            <Link href={`/pay/${product.id}`}>
+              Beli
+            </Link>
           </Button>
         </CardFooter>
       </Card>
